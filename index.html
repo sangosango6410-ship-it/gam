@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GAM · Groove &amp; Mood</title>
+<meta name="description" content="경북대 밴드동아리 GAM 부원 게시판">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎸</text></svg>">
+<script>try{var t=localStorage.getItem("gam.theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ---------- 색감: 다크(기본) ---------- */
+:root{
+  color-scheme: dark;
+  --bg:#121010;
+  --surface:#1B1816;
+  --surface-2:#231F1C;
+  --well:#161311;
+  --hover:#2B2622;
+  --border:#2D2824;
+  --border-strong:#3E3731;
+  --text:#EEE7DC;
+  --pre:#C8BEB1;
+  --muted:#A39888;
+  --faint:#716759;
+  --amber:#E8963F;
+  --amber-hover:#FFB85C;
+  --accent-text:#FFB85C;
+  --amber-soft:rgba(232,150,63,.11);
+  --amber-line:rgba(232,150,63,.45);
+  --notice-text:#F0D6B0;
+  --top-bg:rgba(18,16,16,.92);
+  --danger:#E57A63;
+  --shadow:0 10px 28px rgba(0,0,0,.5);
+  --r:12px;
+  --r-sm:8px;
+}
+/* ---------- 색감: 라이트 ---------- */
+:root[data-theme="light"]{
+  color-scheme: light;
+  --bg:#F5F1EA;
+  --surface:#FFFFFF;
+  --surface-2:#FBF8F3;
+  --well:#F4EFE7;
+  --hover:#F0EAE0;
+  --border:#E6DED1;
+  --border-strong:#D4C9B8;
+  --text:#1E1914;
+  --pre:#4A4037;
+  --muted:#6B5F52;
+  --faint:#958878;
+  --amber:#E08A2E;
+  --amber-hover:#EE9C44;
+  --accent-text:#A9570B;
+  --amber-soft:rgba(224,138,46,.12);
+  --amber-line:rgba(224,138,46,.55);
+  --notice-text:#6A3F12;
+  --top-bg:rgba(245,241,234,.92);
+  --danger:#C0412A;
+  --shadow:0 10px 28px rgba(60,40,20,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  font-size:15px;line-height:1.6;-webkit-text-size-adjust:100%;
+  transition:background .2s,color .2s;
+}
+a{color:var(--accent-text)}
+button,input,textarea{font:inherit}
+button{cursor:pointer;color:inherit}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.wrap{max-width:820px;margin:0 auto;padding:0 18px}
+.hide{display:none !important}
+input,textarea{background:var(--well);border:1px solid var(--border-strong);border-radius:var(--r-sm);
+  padding:10px 12px;color:var(--text);width:100%;transition:border-color .15s}
+input::placeholder,textarea::placeholder{color:var(--faint)}
+input:focus,textarea:focus{outline:none;border-color:var(--amber)}
+textarea{resize:vertical;min-height:110px;line-height:1.6}
+
+/* 버튼 */
+.btn{background:var(--surface-2);color:var(--text);border:1px solid var(--border-strong);border-radius:var(--r-sm);
+  padding:9px 16px;font-weight:600;font-size:14px;line-height:1.4;transition:background .15s,border-color .15s}
+.btn:hover{background:var(--hover)}
+.btn:disabled{opacity:.55;cursor:default}
+.btn--amber{background:var(--amber);border-color:var(--amber);color:#1A1109}
+.btn--amber:hover{background:var(--amber-hover);border-color:var(--amber-hover)}
+.btn--ghost{background:transparent}
+.btn--apply{background:transparent;border-color:var(--amber-line);color:var(--accent-text)}
+.btn--apply:hover{background:var(--amber-soft);border-color:var(--amber)}
+.btn--sm{padding:6px 10px;font-size:13px}
+.btn--wide{width:100%}
+.linkbtn{background:none;border:none;padding:0;color:var(--muted);font-size:13px}
+.linkbtn:hover{color:var(--text);text-decoration:underline;text-underline-offset:3px}
+.linkbtn--danger:hover{color:var(--danger)}
+.iconbtn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;
+  background:transparent;border:1px solid var(--border-strong);color:var(--muted);padding:0}
+.iconbtn:hover{color:var(--text);background:var(--hover)}
+.iconbtn svg{width:16px;height:16px}
+
+.logo{font-family:"Black Han Sans",sans-serif;font-weight:400;letter-spacing:.05em;margin:0;line-height:1}
+.lamp{width:11px;height:11px;border-radius:50%;flex:none;background:#5A3A1C;border:2px solid #2C1D0F;
+  transition:background .45s ease, box-shadow .45s ease}
+.lamp.on{background:#FFB85C;box-shadow:0 0 10px 2px rgba(232,150,63,.7)}
+
+/* 첫 화면 */
+#gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px 18px}
+.plate{width:100%;max-width:400px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px 28px 26px}
+.plate__top{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+#gate .logo{font-size:40px}
+.plate__sub{margin:0 0 20px;color:var(--muted);font-size:13px}
+.plate__lead{margin:0 0 18px;font-size:14px}
+.field{display:block;margin-bottom:6px}
+.field span{display:block;font-size:12.5px;color:var(--muted);margin-bottom:6px}
+.gate__err{font-size:13px;color:var(--danger);min-height:20px;margin-bottom:8px}
+.gate__foot{margin:18px 0 0;padding-top:14px;border-top:1px solid var(--border);font-size:12.5px;color:var(--faint)}
+
+/* 헤더 */
+.top{position:sticky;top:0;z-index:10;background:var(--top-bg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--border)}
+.top__in{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 18px 12px;max-width:820px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand .logo{font-size:26px}
+.brand small{font-size:12px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.who{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);flex:none}
+.who b{color:var(--text);font-weight:600}
+.tabs{display:flex;gap:4px;max-width:820px;margin:0 auto;padding:0 18px 12px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:none;border:1px solid transparent;border-radius:999px;padding:6px 14px;color:var(--muted);
+  font-weight:600;font-size:14px;white-space:nowrap}
+.tab:hover{color:var(--text)}
+.tab[aria-selected="true"]{color:var(--accent-text);background:var(--amber-soft);border-color:var(--amber-line)}
+
+/* 본문 */
+main{padding:28px 0 70px}
+.board{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.board h2{font-size:21px;font-weight:700;margin:0 0 4px}
+.board p{margin:0;color:var(--muted);font-size:13.5px;max-width:52ch}
+.board__act{display:flex;gap:8px;flex-wrap:wrap}
+.notice-bar{background:var(--amber-soft);border:1px solid var(--amber-line);border-radius:var(--r-sm);
+  padding:11px 14px;margin-bottom:18px;font-size:13.5px;color:var(--notice-text)}
+.notice-bar code{background:rgba(0,0,0,.2);padding:1px 5px;border-radius:4px;font-size:12.5px}
+
+.form{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:20px}
+.form .row{display:flex;gap:12px;flex-wrap:wrap}
+.form .row>label{flex:1 1 190px}
+.form label{display:block;margin-bottom:12px}
+.form label span{display:block;font-size:12.5px;color:var(--muted);margin-bottom:6px}
+.form__act{display:flex;gap:8px;justify-content:flex-end}
+
+/* 목록 카드 */
+.card{display:block;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  padding:15px 18px;margin-bottom:10px;color:inherit;text-decoration:none;transition:border-color .15s,background .15s}
+.card:hover{border-color:var(--border-strong);background:var(--surface-2)}
+.card--pin{border-color:var(--amber-line)}
+.card__t{margin:0;font-size:16px;font-weight:600;line-height:1.45;word-break:break-word}
+.artist{color:var(--muted);font-weight:400;font-size:14px}
+.card__pre{margin:5px 0 0;color:var(--pre);font-size:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-wrap;word-break:break-word}
+.meta{margin:8px 0 0;font-size:12.5px;color:var(--faint)}
+.meta b{font-weight:600;color:var(--muted)}
+.tag{font-weight:400;color:var(--faint);font-size:11.5px;margin-left:3px}
+.badge{display:inline-block;font-size:11px;font-weight:600;color:var(--accent-text);background:var(--amber-soft);
+  border:1px solid var(--amber-line);border-radius:999px;padding:0 8px;margin-right:6px;vertical-align:2px;line-height:1.6}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{font-size:12px;padding:2px 9px;border-radius:999px;border:1px solid var(--border);color:var(--faint);line-height:1.6}
+.chip.on{color:var(--text);background:var(--amber-soft);border-color:var(--amber-line)}
+.chip b{color:var(--accent-text);margin-left:4px;font-weight:600}
+
+/* 상세 */
+.back{display:inline-flex;align-items:center;gap:6px;margin-bottom:14px;font-size:14px}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:12px}
+.detail__t{margin:0;font-size:22px;font-weight:700;line-height:1.4;word-break:break-word}
+.detail__artist{margin:4px 0 0;color:var(--muted);font-size:15px}
+.detail__body{margin:18px 0 0;white-space:pre-wrap;word-break:break-word;font-size:15px}
+.detail__act{display:flex;gap:16px;margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px}
+.sec-h h3{margin:0;font-size:15px;font-weight:700}
+.sec-h span{font-size:13px;color:var(--muted)}
+.edit label{display:block;margin-bottom:12px}
+.edit label span{display:block;font-size:12.5px;color:var(--muted);margin-bottom:6px}
+
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.slot{display:flex;flex-direction:column;gap:8px;background:var(--well);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px}
+.slot.filled{border-color:var(--border-strong)}
+.slot.mine{border-color:var(--amber-line);background:var(--amber-soft)}
+.slot__h{display:flex;justify-content:space-between;align-items:baseline}
+.slot__h b{font-size:14.5px}
+.slot__h span{font-size:12px;color:var(--muted)}
+.slot ul{list-style:none;margin:0;padding:0;font-size:13.5px;flex:1}
+.slot li{padding:2px 0;display:flex;align-items:baseline;gap:2px}
+.slot li .x{margin-left:auto;background:none;border:none;color:var(--faint);font-size:14px;line-height:1;padding:0 2px}
+.slot li .x:hover{color:var(--danger)}
+.slot__none{margin:0;font-size:13px;color:var(--faint);flex:1}
+.slot .btn{margin-top:4px}
+
+.cmt{padding:11px 0;border-bottom:1px solid var(--border);font-size:14px}
+.cmt:first-child{padding-top:0}
+.cmt__h{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.cmt__h em{font-style:normal;font-weight:600;font-size:13px}
+.cmt__h time{font-size:12px;color:var(--faint)}
+.cmt__adm{margin-left:auto;display:flex;gap:10px}
+.cmt__adm .linkbtn{font-size:12px}
+.cmt p{margin:3px 0 0;white-space:pre-wrap;word-break:break-word}
+.cmt-none{margin:0 0 4px;color:var(--faint);font-size:13.5px}
+.cmt-form{display:flex;gap:8px;margin-top:14px}
+.cmt-form input{flex:1}
+
+.empty{border:1px dashed var(--border-strong);border-radius:var(--r);padding:34px 22px;text-align:center;color:var(--muted);font-size:14px}
+.empty b{display:block;color:var(--text);font-size:15.5px;margin-bottom:4px;font-weight:600}
+footer{padding:10px 0 40px;color:var(--faint);font-size:12px;text-align:center}
+footer .linkbtn{font-size:12px;color:var(--faint);margin-left:8px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--surface-2);color:var(--text);
+  border:1px solid var(--border-strong);padding:10px 18px;border-radius:999px;font-size:13.5px;font-weight:500;
+  box-shadow:var(--shadow);z-index:50;white-space:nowrap}
+@media (max-width:560px){
+  .wrap{padding:0 16px}
+  .top__in{padding:12px 16px 10px}
+  .tabs{padding:0 16px 10px}
+  .brand small{display:none}
+  .who{gap:8px}
+  .panel{padding:18px 16px}
+  .slots{grid-template-columns:1fr 1fr}
+  .detail__t{font-size:20px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="plate">
+    <div class="plate__top">
+      <span class="lamp" id="lamp"></span>
+      <h1 class="logo">GAM</h1>
+    </div>
+    <p class="plate__sub">Groove &amp; Mood · 경북대 밴드동아리</p>
+    <p class="plate__lead">게시판에 표시될 이름을 정해줘. 누가 쓴 글인지 알 수 있게 실명 + 기수로 적어주면 좋아.</p>
+    <label class="field">
+      <span>이름</span>
+      <input id="nickIn" type="text" autocomplete="nickname" maxlength="20" placeholder="예: 김상오 18기">
+    </label>
+    <div class="gate__err" id="gateErr"></div>
+    <button class="btn btn--amber btn--wide" id="enter">들어가기</button>
+    <p class="gate__foot">이름은 이 기기에 저장돼서 다음부턴 바로 들어와져. 바꾸고 싶으면 오른쪽 위 ‘이름 바꾸기’를 눌러.</p>
+  </div>
+</div>
+
+<div id="app" class="hide">
+  <header class="top">
+    <div class="top__in">
+      <div class="brand">
+        <span class="lamp on"></span>
+        <h1 class="logo">GAM</h1>
+        <small>Groove &amp; Mood · 경북대 밴드동아리</small>
+      </div>
+      <div class="who">
+        <span class="badge hide" id="adminBadge">관리자</span>
+        <b id="nickLabel"></b>
+        <button class="linkbtn" id="nickBtn">이름 바꾸기</button>
+        <button class="iconbtn themeBtn" type="button" title="색감 변경" aria-label="색감 변경"></button>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button class="tab" role="tab" data-b="notice">공지</button>
+      <button class="tab" role="tab" data-b="setlist">선곡회의</button>
+      <button class="tab" role="tab" data-b="suggest">건의사항</button>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <div id="stateBar"></div>
+
+    <section id="listView">
+      <div class="board">
+        <div>
+          <h2 id="bTitle"></h2>
+          <p id="bDesc"></p>
+        </div>
+        <div class="board__act">
+          <button class="btn hide" id="xlsxBtn">엑셀로 받기</button>
+          <button class="btn btn--amber" id="newBtn">글 쓰기</button>
+        </div>
+      </div>
+
+      <form class="form hide" id="form">
+        <div class="row">
+          <label><span id="labTitle">제목</span><input id="fTitle" maxlength="80" required></label>
+          <label id="wrapArtist" class="hide"><span>아티스트</span><input id="fArtist" maxlength="60"></label>
+        </div>
+        <label><span id="labBody">내용</span><textarea id="fBody" maxlength="4000"></textarea></label>
+        <div class="form__act">
+          <button type="button" class="btn btn--ghost" id="cancel">취소</button>
+          <button type="submit" class="btn btn--amber" id="submit">올리기</button>
+        </div>
+      </form>
+
+      <div id="list"></div>
+    </section>
+
+    <section id="detailView" class="hide"></section>
+  </main>
+
+  <footer class="wrap">GAM · Groove &amp; Mood — 부원 전용 게시판<button class="linkbtn" id="adminBtn">관리자</button></footer>
+</div>
+
+<script type="module">
+/* ==========================================================
+   Firebase 설정
+   ========================================================== */
+
+// Firebase 설정 — 콘솔에서 복사한 값으로 통째로 교체
+const firebaseConfig = {
+apiKey: "AIzaSyDzGWjDCLAYQ2ypqDGNl66Dhz55sOeijNE",
+  authDomain: "gam-47d14.firebaseapp.com",
+  projectId: "gam-47d14",
+  storageBucket: "gam-47d14.firebasestorage.app",
+  messagingSenderId: "724349018147",
+  appId: "1:724349018147:web:43cdfab4512c2bcf35d196",
+  measurementId: "G-PH8WMSGMST"
+};
+
+// ※ 관리자 코드는 이 파일이 아니라 firestore.rules 안에 있어. (소스 보기로 안 보이게)
+
+/* ========================================================== */
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+import {
+  getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, deleteField, getDoc, setDoc,
+  onSnapshot, query, orderBy, limit, arrayUnion, arrayRemove
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+const BOARDS = {
+  notice:{t:"공지", d:"연습 일정, 공연, 회비 같은 전달사항. 중요한 건 위에 고정돼.",
+          empty:"아직 올라온 공지가 없어.", write:"공지 쓰기", titleLab:"제목", bodyLab:"내용"},
+  setlist:{t:"선곡회의", d:"하고 싶은 곡을 올려줘. 곡을 눌러 들어가면 원하는 세션에 지원할 수 있고, 누가 어디 지원했는지 다 보여.",
+          empty:"제안된 곡이 아직 없어. 첫 곡을 올려봐.", write:"곡 제안하기", titleLab:"곡명", bodyLab:"곡 소개 / 참고 링크 (선택)"},
+  suggest:{t:"건의사항", d:"동방, 회비, 운영, 분위기 — 바꿨으면 하는 건 뭐든 편하게.",
+          empty:"아직 올라온 건의가 없어.", write:"건의 올리기", titleLab:"제목", bodyLab:"내용"}
+};
+
+// 선곡회의 세션 (순서 = 화면·엑셀 표시 순서)
+const SESSIONS = [
+  ["vocal","보컬"], ["piano","피아노"], ["drum","드럼"],
+  ["guitar1","메인기타"], ["guitar2","세컨기타"], ["bass","베이스"]
+];
+
+const $ = id => document.getElementById(id);
+let db = null, auth = null, uid = null, admin = false;
+let posts = [], board = "notice", openId = null;
+let loaded = false, readOnly = false;
+let editing = null, draft = {}, cmtDraft = "";
+
+/* ---------- 색감 변경 ---------- */
+const ICON_SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+const ICON_MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+const theme = () => document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+function paintTheme(){
+  document.querySelectorAll(".themeBtn").forEach(b => {
+    b.innerHTML = theme() === "light" ? ICON_MOON : ICON_SUN;
+    b.title = theme() === "light" ? "어두운 색감으로" : "밝은 색감으로";
+  });
+}
+function toggleTheme(){
+  const next = theme() === "light" ? "dark" : "light";
+  document.documentElement.setAttribute("data-theme", next);
+  try{ localStorage.setItem("gam.theme", next); }catch(e){}
+  paintTheme();
+}
+document.querySelectorAll(".themeBtn").forEach(b => b.addEventListener("click", toggleTheme));
+paintTheme();
+
+/* ---------- 이름(닉네임) 저장 ---------- */
+let memNick = "";
+const nick = () => { try{ return localStorage.getItem("gam.nick") || memNick; }catch(e){ return memNick; } };
+function saveNick(v){
+  v = String(v || "").trim().slice(0, 20);
+  if(!v) return false;
+  memNick = v;
+  try{ localStorage.setItem("gam.nick", v); }catch(e){}
+  return true;
+}
+function askNick(force){
+  if(nick() && !force){ paintNick(); return; }
+  const v = prompt("게시판에 표시될 이름을 적어줘. (예: 김상오 18기)", nick());
+  if(v !== null) saveNick(v);
+  paintNick(); render();
+}
+function paintNick(){ $("nickLabel").textContent = nick() || "이름 미설정"; }
+$("nickBtn").addEventListener("click", () => askNick(true));
+
+// 이 기기의 로그인 ID (익명 로그인). 세션 지원·태그에 쓰여.
+const myId = () => uid;
+
+/* ---------- 입장 ---------- */
+function show(){
+  $("gate").classList.add("hide");
+  $("app").classList.remove("hide");
+  paintNick();
+  route();
+  boot();
+}
+$("enter").addEventListener("click", () => {
+  if(!saveNick($("nickIn").value)){
+    $("gateErr").textContent = "이름을 적어줘.";
+    $("nickIn").focus();
+    return;
+  }
+  $("gateErr").textContent = "";
+  $("lamp").classList.add("on");
+  setTimeout(show, 450);
+});
+$("nickIn").addEventListener("keydown", e => { if(e.key === "Enter") $("enter").click(); });
+
+/* ---------- 관리자 ---------- */
+function paintAdmin(){
+  $("adminBadge").classList.toggle("hide", !admin);
+  $("adminBtn").textContent = admin ? "관리자 모드 끄기" : "관리자";
+}
+$("adminBtn").addEventListener("click", async () => {
+  if(!db || !uid) return toast("아직 연결 중이야. 잠깐 뒤에 다시 눌러줘.");
+  if(admin){
+    if(!confirm("이 기기에서 관리자 모드를 끌까?")) return;
+    try{ await deleteDoc(doc(db, "admins", uid)); admin = false; paintAdmin(); render(); toast("관리자 모드를 껐어."); }
+    catch(err){ console.error(err); toast("끄지 못했어."); }
+    return;
+  }
+  const code = prompt("관리자 코드를 입력해줘.");
+  if(code === null || !code.trim()) return;
+  try{
+    // 코드가 맞는지는 Firestore 보안 규칙이 서버에서 확인해. 틀리면 거절돼.
+    await setDoc(doc(db, "admins", uid), { code: code.trim(), at: Date.now() });
+    admin = true; paintAdmin(); render(); toast("관리자 모드가 켜졌어.");
+  }catch(err){
+    console.error(err);
+    toast(err && err.code === "permission-denied" ? "코드가 달라." : "확인하지 못했어. 다시 시도해줘.");
+  }
+});
+
+/* ---------- 주소(#/게시판/글ID)로 화면 전환 ---------- */
+function route(){
+  const m = location.hash.match(/^#\/(notice|setlist|suggest)(?:\/([\w-]+))?$/);
+  const b = m ? m[1] : "notice";
+  if(b !== board || !$("bTitle").textContent){ board = b; paintBoard(); }
+  const id = (m && m[2]) || null;
+  if(id !== openId){ editing = null; draft = {}; cmtDraft = ""; }
+  openId = id;
+  render();
+  window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", route);
+const go = (b, id) => { location.hash = "#/" + b + (id ? "/" + id : ""); };
+
+function paintBoard(){
+  const c = BOARDS[board];
+  $("bTitle").textContent = c.t;
+  $("bDesc").textContent = c.d;
+  $("newBtn").textContent = c.write;
+  $("labTitle").textContent = c.titleLab;
+  $("labBody").textContent = c.bodyLab;
+  $("wrapArtist").classList.toggle("hide", board !== "setlist");
+  $("xlsxBtn").classList.toggle("hide", board !== "setlist");
+  closeForm();
+  document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t.dataset.b === board)));
+}
+document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => go(t.dataset.b)));
+
+/* ---------- 글쓰기 ---------- */
+function openForm(){
+  if(readOnly) return toast("지금은 읽기 전용이야.");
+  if(!uid) return toast("아직 연결 중이야. 잠깐 뒤에 다시 눌러줘.");
+  if(!nick()){ askNick(true); if(!nick()) return; }
+  $("form").classList.remove("hide"); $("newBtn").classList.add("hide"); $("fTitle").focus();
+}
+function closeForm(){
+  $("form").classList.add("hide"); $("newBtn").classList.remove("hide");
+  $("fTitle").value = ""; $("fArtist").value = ""; $("fBody").value = "";
+}
+$("newBtn").addEventListener("click", openForm);
+$("cancel").addEventListener("click", closeForm);
+
+$("form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const title = $("fTitle").value.trim();
+  if(!title || !db || !uid) return;
+  $("submit").disabled = true;
+  try{
+    await addDoc(collection(db, "posts"), {
+      board,
+      title,
+      artist: board === "setlist" ? $("fArtist").value.trim() : "",
+      body: $("fBody").value.trim(),
+      author: nick() || "익명",
+      authorId: uid,
+      createdAt: Date.now(),
+      pinned: false,
+      votes: {},          // 예전 규칙 호환용 (안 씀)
+      sessions: {},       // 선곡회의 세션 지원자
+      comments: []
+    });
+    closeForm(); toast("올렸어.");
+  }catch(err){ fail(err, "글을 올리지 못했어."); }
+  $("submit").disabled = false;
+});
+
+/* ---------- 엑셀로 받기 (선곡회의) ---------- */
+let xlsxLib = null;
+function loadXlsx(){
+  if(window.XLSX) return Promise.resolve(window.XLSX);
+  if(xlsxLib) return xlsxLib;
+  xlsxLib = new Promise((ok, no) => {
+    const s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";
+    s.onload = () => ok(window.XLSX);
+    s.onerror = () => { xlsxLib = null; no(new Error("xlsx load failed")); };
+    document.head.appendChild(s);
+  });
+  return xlsxLib;
+}
+const ymd = ms => { const d = new Date(ms || Date.now()); return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0"); };
+const shortTag = id => id ? "#" + String(id).slice(-4) : "";
+
+$("xlsxBtn").addEventListener("click", async () => {
+  const songs = posts.filter(p => p.board === "setlist").sort((a,b) => (a.createdAt||0) - (b.createdAt||0));
+  if(!songs.length) return toast("아직 제안된 곡이 없어.");
+  $("xlsxBtn").disabled = true;
+  try{
+    const XLSX = await loadXlsx();
+
+    // 시트 1: 곡별 세션
+    const head1 = ["번호", "곡명", "아티스트", ...SESSIONS.map(s => s[1]), "빈 세션", "제안자", "제안일", "댓글 수"];
+    const rows1 = songs.map((p, i) => {
+      const cols = SESSIONS.map(([k]) => applicants(p, k).map(a => a.name).join(", "));
+      const emptyS = SESSIONS.filter(([k]) => !applicants(p, k).length).map(s => s[1]).join(", ");
+      return [i + 1, p.title, p.artist || "", ...cols, emptyS || "없음", p.author || "익명", ymd(p.createdAt), (p.comments || []).length];
+    });
+    const ws1 = XLSX.utils.aoa_to_sheet([head1, ...rows1]);
+    ws1["!cols"] = [{wch:5},{wch:24},{wch:16}, ...SESSIONS.map(() => ({wch:16})), {wch:22},{wch:14},{wch:11},{wch:7}];
+    ws1["!autofilter"] = { ref: XLSX.utils.encode_range({ s:{r:0,c:0}, e:{r:rows1.length, c:head1.length-1} }) };
+
+    // 시트 2: 지원자별
+    const rows2 = [];
+    songs.forEach((p, i) => SESSIONS.forEach(([k, label]) =>
+      applicants(p, k).forEach(a => rows2.push([a.name, shortTag(a.id), i + 1, p.title, p.artist || "", label]))));
+    rows2.sort((a,b) => a[0].localeCompare(b[0], "ko") || a[2] - b[2]);
+    const ws2 = XLSX.utils.aoa_to_sheet([["이름", "태그", "곡 번호", "곡명", "아티스트", "세션"], ...rows2]);
+    ws2["!cols"] = [{wch:14},{wch:7},{wch:7},{wch:24},{wch:16},{wch:10}];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws1, "곡별 세션");
+    XLSX.utils.book_append_sheet(wb, ws2, "지원자별");
+    const out = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const url = URL.createObjectURL(new Blob([out], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
+    const link = document.createElement("a");
+    link.href = url; link.download = "GAM_setlist_" + ymd() + ".xlsx";   // 한글 파일명은 일부 브라우저에서 깨져서 영문으로
+    document.body.appendChild(link); link.click(); link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    toast("엑셀 파일을 받았어.");
+  }catch(err){
+    console.error(err);
+    toast("엑셀 파일을 만들지 못했어. 인터넷 연결을 확인해줘.");
+  }
+  $("xlsxBtn").disabled = false;
+});
+
+/* ---------- 렌더 공통 ---------- */
+const esc = s => String(s ?? "").replace(/[&<>"']/g, m =>
+  ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+const linkify = s => esc(s).replace(/https?:\/\/[^\s<]+/g, u => '<a href="' + u + '" target="_blank" rel="noopener">' + u + '</a>');
+
+function when(ms){
+  if(!ms) return "";
+  const d = new Date(ms), n = new Date(), s = (n - d) / 1000;
+  if(s < 60) return "방금";
+  if(s < 3600) return Math.floor(s/60) + "분 전";
+  if(s < 86400) return Math.floor(s/3600) + "시간 전";
+  const y = d.getFullYear() === n.getFullYear() ? "" : d.getFullYear() + ".";
+  return y + (d.getMonth()+1) + "." + d.getDate();
+}
+// 같은 이름을 다른 사람이 써도 구분되게, 기기마다 고유한 짧은 태그
+const tag = id => id ? '<span class="tag" title="작성한 기기 표시">' + esc(shortTag(id)) + '</span>' : "";
+
+function applicants(p, key){
+  const m = ((p.sessions || {})[key]) || {};
+  return Object.keys(m).filter(id => m[id])
+    .map(id => ({ id, name: m[id].name || "익명", at: m[id].at || 0 }))
+    .sort((a,b) => a.at - b.at);
+}
+
+function render(){
+  if(openId){
+    $("listView").classList.add("hide");
+    $("detailView").classList.remove("hide");
+    renderDetail();
+  } else {
+    $("detailView").classList.add("hide");
+    $("listView").classList.remove("hide");
+    renderList();
+  }
+}
+
+/* ---------- 목록 ---------- */
+function renderList(){
+  const list = $("list");
+  if(!loaded){ list.innerHTML = '<div class="empty">불러오는 중…</div>'; return; }
+  let rows = posts.filter(p => p.board === board);
+  if(board === "notice"){
+    rows.sort((a,b) => (b.pinned?1:0) - (a.pinned?1:0) || (b.createdAt||0) - (a.createdAt||0));
+  } else {
+    rows.sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
+  }
+  if(!rows.length){
+    list.innerHTML = '<div class="empty"><b>' + esc(BOARDS[board].empty) + '</b>' +
+      (readOnly ? "" : "위의 버튼으로 첫 글을 남겨봐.") + '</div>';
+    return;
+  }
+  list.innerHTML = rows.map(card).join("");
+}
+
+function card(p){
+  const cs = p.comments || [];
+  const pin = p.board === "notice" && p.pinned;
+  let h = '<a class="card' + (pin ? " card--pin" : "") + '" href="#/' + esc(p.board) + '/' + esc(p.id) + '">';
+  h += '<h3 class="card__t">' + (pin ? '<span class="badge">고정</span>' : "") + esc(p.title);
+  if(p.artist) h += ' <span class="artist">— ' + esc(p.artist) + '</span>';
+  h += '</h3>';
+  if(p.board === "setlist"){
+    h += '<div class="chips">' + SESSIONS.map(([k, label]) => {
+      const n = applicants(p, k).length;
+      return '<span class="chip' + (n ? " on" : "") + '">' + label + (n ? '<b>' + n + '</b>' : "") + '</span>';
+    }).join("") + '</div>';
+  } else if(p.body){
+    h += '<p class="card__pre">' + esc(p.body) + '</p>';
+  }
+  h += '<p class="meta"><b>' + esc(p.author || "익명") + '</b>' + tag(p.authorId) + ' · ' + esc(when(p.createdAt)) +
+       (cs.length ? " · 댓글 " + cs.length : "") + '</p>';
+  return h + '</a>';
+}
+
+/* ---------- 상세 ---------- */
+function renderDetail(){
+  const view = $("detailView");
+  // 다시 그려도 입력 중이던 칸의 포커스·커서를 유지
+  const ae = document.activeElement;
+  const focusF = ae && view.contains(ae) && ae.dataset ? ae.dataset.f : null;
+  const selS = focusF ? ae.selectionStart : null, selE = focusF ? ae.selectionEnd : null;
+
+  const backBtn = '<button class="linkbtn back" data-act="back">← ' + esc(BOARDS[board].t) + ' 목록</button>';
+  if(!loaded){ view.innerHTML = backBtn + '<div class="empty">불러오는 중…</div>'; return; }
+  const p = posts.find(x => x.id === openId);
+  if(!p){ view.innerHTML = backBtn + '<div class="empty"><b>글을 찾을 수 없어.</b>지워졌을 수도 있어.</div>'; return; }
+
+  const cs = p.comments || [];
+  const canAct = !readOnly && !!uid;
+  const isAdm = canAct && admin;
+  let h = backBtn;
+
+  // 본문 (관리자가 수정 중이면 수정 폼)
+  if(isAdm && editing === p.id){
+    h += '<article class="panel edit"><div class="sec-h"><h3>글 수정</h3></div>';
+    h += '<label><span>' + esc(BOARDS[p.board].titleLab) + '</span><input data-f="eTitle" maxlength="80" value="' + esc(draft.eTitle) + '"></label>';
+    if(p.board === "setlist") h += '<label><span>아티스트</span><input data-f="eArtist" maxlength="60" value="' + esc(draft.eArtist) + '"></label>';
+    h += '<label><span>' + esc(BOARDS[p.board].bodyLab) + '</span><textarea data-f="eBody" maxlength="4000">' + esc(draft.eBody) + '</textarea></label>';
+    h += '<div class="form__act"><button class="btn btn--ghost" data-act="editCancel">취소</button><button class="btn btn--amber" data-act="editSave">저장</button></div>';
+    h += '</article>';
+  } else {
+    h += '<article class="panel">';
+    h += '<h2 class="detail__t">' + (p.board === "notice" && p.pinned ? '<span class="badge">고정</span>' : "") + esc(p.title) + '</h2>';
+    if(p.artist) h += '<p class="detail__artist">' + esc(p.artist) + '</p>';
+    h += '<p class="meta"><b>' + esc(p.author || "익명") + '</b>' + tag(p.authorId) + ' · ' + esc(when(p.createdAt)) +
+         (p.editedAt ? ' · 수정됨' : '') + '</p>';
+    if(p.body) h += '<div class="detail__body">' + linkify(p.body) + '</div>';
+    if(isAdm){
+      h += '<div class="detail__act"><button class="linkbtn" data-act="edit">수정</button>';
+      if(p.board === "notice") h += '<button class="linkbtn" data-act="pin">' + (p.pinned ? "고정 해제" : "위에 고정") + '</button>';
+      h += '<button class="linkbtn linkbtn--danger" data-act="del">글 삭제</button></div>';
+    }
+    h += '</article>';
+  }
+
+  // 선곡회의: 세션 지원
+  if(p.board === "setlist"){
+    const me = myId();
+    const filled = SESSIONS.filter(([k]) => applicants(p, k).length).length;
+    h += '<section class="panel"><div class="sec-h"><h3>세션 지원</h3><span>6개 중 ' + filled + '개 지원 있음</span></div><div class="slots">';
+    h += SESSIONS.map(([k, label]) => {
+      const list = applicants(p, k);
+      const mine = !!me && list.some(a => a.id === me);
+      let s = '<div class="slot' + (list.length ? " filled" : "") + (mine ? " mine" : "") + '">';
+      s += '<div class="slot__h"><b>' + label + '</b><span>' + (list.length ? list.length + "명" : "") + '</span></div>';
+      s += list.length
+        ? '<ul>' + list.map(a => '<li>' + esc(a.name) + tag(a.id) +
+            (isAdm && a.id !== me ? '<button class="x" title="지원 빼기" data-act="kick" data-k="' + k + '" data-id="' + esc(a.id) + '">×</button>' : "") +
+          '</li>').join("") + '</ul>'
+        : '<p class="slot__none">아직 없음</p>';
+      if(canAct){
+        s += '<button class="btn btn--sm' + (mine ? " btn--ghost" : " btn--apply") + '" data-act="apply" data-k="' + k + '">' +
+             (mine ? "지원 취소" : "지원하기") + '</button>';
+      }
+      return s + '</div>';
+    }).join("");
+    h += '</div></section>';
+  }
+
+  // 댓글
+  h += '<section class="panel"><div class="sec-h"><h3>댓글' + (cs.length ? " " + cs.length : "") + '</h3></div>';
+  h += cs.length ? cs.map((c,i) =>
+      '<div class="cmt"><div class="cmt__h"><em>' + esc(c.author || "익명") + '</em>' + tag(c.authorId) +
+      '<time>' + esc(when(c.createdAt)) + (c.editedAt ? " · 수정됨" : "") + '</time>' +
+      (isAdm ? '<span class="cmt__adm"><button class="linkbtn" data-act="editc" data-i="' + i + '">수정</button>' +
+               '<button class="linkbtn linkbtn--danger" data-act="delc" data-i="' + i + '">삭제</button></span>' : "") +
+      '</div><p>' + linkify(c.body) + '</p></div>').join("")
+    : '<p class="cmt-none">첫 댓글을 남겨봐.</p>';
+  if(canAct){
+    h += '<div class="cmt-form"><input placeholder="댓글 쓰기" data-f="cmt" maxlength="500" value="' + esc(cmtDraft) + '">' +
+         '<button class="btn" data-act="cmt">등록</button></div>';
+  }
+  h += '</section>';
+
+  view.innerHTML = h;
+  if(focusF){
+    const el = view.querySelector('[data-f="' + focusF + '"]');
+    if(el){ el.focus(); try{ el.setSelectionRange(selS, selE); }catch(e){} }
+  }
+}
+
+// 입력 중인 값 보관 (다른 사람이 글을 바꿔서 화면이 다시 그려져도 안 날아가게)
+$("detailView").addEventListener("input", e => {
+  const f = e.target.dataset && e.target.dataset.f;
+  if(!f) return;
+  if(f === "cmt") cmtDraft = e.target.value; else draft[f] = e.target.value;
+});
+
+/* ---------- 동작 ---------- */
+$("detailView").addEventListener("click", async e => {
+  const b = e.target.closest("[data-act]");
+  if(!b) return;
+  const act = b.dataset.act;
+  if(act === "back"){ go(board); return; }
+  const p = posts.find(x => x.id === openId);
+  if(!db || !p) return;
+  if(!uid) return toast("아직 연결 중이야. 잠깐 뒤에 다시 눌러줘.");
+  const ref = doc(db, "posts", p.id);
+
+  try{
+    if(act === "apply"){
+      if(!nick()){ askNick(true); if(!nick()) return; }
+      const key = b.dataset.k;
+      const mine = applicants(p, key).some(a => a.id === uid);
+      b.disabled = true;
+      await updateDoc(ref, { ["sessions." + key + "." + uid]: mine ? deleteField() : { name: nick(), at: Date.now() } });
+      toast(mine ? "지원을 취소했어." : SESSIONS.find(s => s[0] === key)[1] + " 지원했어.");
+    }
+    else if(act === "cmt"){
+      await addComment(p, $("detailView").querySelector('[data-f="cmt"]'));
+    }
+    /* ---- 여기부터 관리자 전용 ---- */
+    else if(!admin){ return; }
+    else if(act === "kick"){
+      const name = (applicants(p, b.dataset.k).find(a => a.id === b.dataset.id) || {}).name || "";
+      if(!confirm(name + " 님을 이 세션에서 뺄까?")) return;
+      await updateDoc(ref, { ["sessions." + b.dataset.k + "." + b.dataset.id]: deleteField() });
+    }
+    else if(act === "edit"){
+      editing = p.id; draft = { eTitle: p.title || "", eArtist: p.artist || "", eBody: p.body || "" };
+      render();
+      const t = $("detailView").querySelector('[data-f="eTitle"]'); if(t) t.focus();
+    }
+    else if(act === "editCancel"){ editing = null; draft = {}; render(); }
+    else if(act === "editSave"){
+      const title = String(draft.eTitle || "").trim();
+      if(!title) return toast("제목을 비울 수는 없어.");
+      b.disabled = true;
+      await updateDoc(ref, {
+        title,
+        artist: p.board === "setlist" ? String(draft.eArtist || "").trim() : (p.artist || ""),
+        body: String(draft.eBody || "").trim(),
+        editedAt: Date.now()
+      });
+      editing = null; draft = {}; render(); toast("수정했어.");
+    }
+    else if(act === "pin"){
+      await updateDoc(ref, { pinned: !p.pinned });
+    }
+    else if(act === "del"){
+      if(!confirm("이 글을 지울까?")) return;
+      await deleteDoc(ref);
+      go(board); toast("지웠어.");
+    }
+    else if(act === "delc"){
+      if(!confirm("이 댓글을 지울까?")) return;
+      const target = (p.comments || [])[Number(b.dataset.i)];
+      if(target) await updateDoc(ref, { comments: arrayRemove(target) });
+    }
+    else if(act === "editc"){
+      const i = Number(b.dataset.i), c = (p.comments || [])[i];
+      if(!c) return;
+      const v = prompt("댓글 수정", c.body);
+      if(v === null || !v.trim() || v.trim() === c.body) return;
+      const next = p.comments.slice();
+      next[i] = { ...c, body: v.trim().slice(0, 500), editedAt: Date.now() };
+      await updateDoc(ref, { comments: next });
+      toast("댓글을 수정했어.");
+    }
+  }catch(err){ fail(err, "처리하지 못했어."); render(); }
+});
+
+$("detailView").addEventListener("keydown", e => {
+  if(e.key !== "Enter" || e.isComposing) return;
+  const inp = e.target.closest('[data-f="cmt"]');
+  if(!inp) return;
+  e.preventDefault();
+  const p = posts.find(x => x.id === openId);
+  if(p) addComment(p, inp).catch(err => fail(err, "댓글을 남기지 못했어."));
+});
+
+async function addComment(p, inp){
+  if(!inp || !uid) return;
+  const text = inp.value.trim();
+  if(!text) return;
+  if(!nick()){ askNick(true); if(!nick()) return; }
+  inp.disabled = true;
+  try{
+    await updateDoc(doc(db, "posts", p.id), {
+      comments: arrayUnion({ author: nick() || "익명", authorId: uid, body: text, createdAt: Date.now() })
+    });
+    cmtDraft = "";
+    const cur = $("detailView").querySelector('[data-f="cmt"]');
+    if(cur){ cur.value = ""; }
+  } finally {
+    const cur = $("detailView").querySelector('[data-f="cmt"]');
+    if(cur){ cur.disabled = false; cur.focus(); }
+  }
+}
+
+/* ---------- 상태 ---------- */
+function toast(msg){
+  document.querySelectorAll(".toast").forEach(t => t.remove());
+  const el = document.createElement("div");
+  el.className = "toast"; el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2400);
+}
+function banner(html){ $("stateBar").innerHTML = '<div class="notice-bar">' + html + '</div>'; }
+function setReadOnly(html){ readOnly = true; banner(html); render(); }
+function fail(err, msg){
+  console.error(err);
+  if(err && err.code === "permission-denied"){
+    toast("권한이 없어서 처리하지 못했어.");
+    return;
+  }
+  toast(msg);
+}
+
+/* ---------- 시작 ---------- */
+function boot(){
+  if(!firebaseConfig.projectId || String(firebaseConfig.projectId).startsWith("여기에")){
+    loaded = true;
+    setReadOnly("아직 Firebase 설정을 안 넣었어. <code>index.html</code> 맨 위 <code>firebaseConfig</code>를 콘솔 값으로 바꿔줘.");
+    return;
+  }
+  let app;
+  try{
+    app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+    auth = getAuth(app);
+  }catch(err){
+    loaded = true;
+    setReadOnly("Firebase 연결에 실패했어. 설정값을 다시 확인해줘.");
+    return;
+  }
+
+  // 글 목록 실시간 구독
+  onSnapshot(
+    query(collection(db, "posts"), orderBy("createdAt", "desc"), limit(300)),
+    snap => {
+      loaded = true;
+      posts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      render();
+    },
+    err => {
+      loaded = true;
+      setReadOnly(err && err.code === "permission-denied"
+        ? "Firestore 보안 규칙 때문에 글을 읽을 수 없어. <code>firestore.rules</code> 내용을 콘솔에 붙여넣어줘."
+        : "게시판을 불러오지 못했어. 새로고침해봐.");
+    }
+  );
+
+  // 기기별 익명 로그인 → 관리자 여부 확인
+  onAuthStateChanged(auth, async user => {
+    if(!user){
+      signInAnonymously(auth).catch(err => {
+        console.error(err);
+        setReadOnly("로그인 설정이 안 돼 있어서 지금은 읽기만 돼. Firebase 콘솔 → Authentication → 로그인 방법에서 <b>익명</b>을 사용 설정해줘.");
+      });
+      return;
+    }
+    uid = user.uid;
+    try{ admin = (await getDoc(doc(db, "admins", uid))).exists(); }catch(e){ admin = false; }
+    paintAdmin(); render();
+  });
+}
+
+// 저장된 이름이 있으면 첫 화면 없이 바로 게시판으로
+if(nick()) show();
+else { try{ $("nickIn").focus(); }catch(e){} }
+</script>
+</body>
+</html>
