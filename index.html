@@ -477,7 +477,7 @@ a.row:active, button.row:active{background:var(--fill-2)}
       <div class="group" style="margin-top:12px">
         <button type="button" class="row srow" id="adminBtn"><span>관리자 모드</span><span class="val"><span id="adminState">꺼짐</span><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></span></button>
       </div>
-      <p class="note" style="margin-top:8px">관리자는 글·댓글을 수정하거나 삭제할 수 있어요.</p>
+      <p class="note" style="margin-top:8px">내가 쓴 글과 댓글은 누구나 수정할 수 있어요. 관리자는 모든 글·댓글을 수정하거나 삭제할 수 있어요.</p>
     </div>
   </div>
 </div>
@@ -970,16 +970,19 @@ function renderDetail(){
   const cs = p.comments || [];
   const canAct = !readOnly && !!uid;
   const isAdm = canAct && admin;
-  const isEditing = isAdm && editing === p.id;
+  const isMine = canAct && !!p.authorId && p.authorId === uid;   // 내가 쓴 글
+  const canEdit = isAdm || isMine;
+  const isEditing = canEdit && editing === p.id;
   let h = backBtn;
 
-  // 본문 (관리자가 수정 중이면 수정 폼)
+  // 본문 (작성자나 관리자가 수정 중이면 수정 폼)
   if(isEditing){
     h += '<div class="sec-h"><b>글 수정</b></div>';
     h += '<div class="group"><label class="frow"><span>' + esc(BOARDS[p.board].titleLab) + '</span><input data-f="eTitle" maxlength="80" value="' + esc(draft.eTitle) + '"></label>';
     if(p.board === "setlist") h += '<label class="frow"><span>아티스트</span><input data-f="eArtist" maxlength="60" value="' + esc(draft.eArtist) + '"></label>';
     h += '<label class="frow"><span>' + esc(BOARDS[p.board].bodyLab) + '</span><textarea data-f="eBody" maxlength="4000">' + esc(draft.eBody) + '</textarea></label></div>';
-    if(p.board === "setlist") h += '<div class="pickbox" data-scope="edit" style="margin-top:12px">' + pickHTML("edit") + '</div>';
+    // 세션 구성 변경은 다른 사람의 지원 기록에 영향을 주므로 관리자만
+    if(p.board === "setlist" && isAdm) h += '<div class="pickbox" data-scope="edit" style="margin-top:12px">' + pickHTML("edit") + '</div>';
     h += '<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">' +
          '<button class="btn" data-act="editCancel">취소</button><button class="btn btn--fill" data-act="editSave">저장</button></div>';
   } else {
@@ -1020,13 +1023,15 @@ function renderDetail(){
 
   // 댓글
   h += '<div class="sec-h"><b>댓글' + (cs.length ? " " + cs.length : "") + '</b></div><div class="group">';
-  h += cs.map((c,i) =>
-      '<div class="row cmt"><span class="cav">' + avatarHTML(c.author, c.authorId) + '</span><div class="row__main">' +
+  h += cs.map((c,i) => {
+      const myC = canAct && !!c.authorId && c.authorId === uid;   // 내가 쓴 댓글
+      return '<div class="row cmt"><span class="cav">' + avatarHTML(c.author, c.authorId) + '</span><div class="row__main">' +
       '<div class="cmt__h"><em>' + esc(c.author || "익명") + '</em>' + tag(c.authorId) +
       '<time>' + esc(when(c.createdAt)) + (c.editedAt ? " · 수정됨" : "") + '</time>' +
-      (isAdm ? '<span class="cmt__adm"><button data-act="editc" data-i="' + i + '">수정</button>' +
-               '<button class="red" data-act="delc" data-i="' + i + '">삭제</button></span>' : "") +
-      '</div><p>' + linkify(c.body) + '</p></div></div>').join("");
+      ((isAdm || myC) ? '<span class="cmt__adm"><button data-act="editc" data-i="' + i + '">수정</button>' +
+               (isAdm ? '<button class="red" data-act="delc" data-i="' + i + '">삭제</button>' : "") + '</span>' : "") +
+      '</div><p>' + linkify(c.body) + '</p></div></div>';
+  }).join("");
   if(!cs.length && !canAct) h += '<div class="row"><span style="color:var(--label-3);font-size:15px">아직 댓글이 없어요.</span></div>';
   if(canAct){
     h += '<div class="row composer"><input placeholder="' + (cs.length ? "댓글 달기" : "첫 댓글을 남겨 주세요") + '" data-f="cmt" maxlength="500" value="' + esc(cmtDraft) + '" aria-label="댓글">' +
@@ -1034,12 +1039,15 @@ function renderDetail(){
   }
   h += '</div>';
 
-  // 관리자 메뉴
-  if(isAdm && !isEditing){
-    h += '<div class="sec-h"><b>관리</b></div><div class="group">';
+  // 글 관리: 작성자는 수정만, 관리자는 수정·고정·삭제
+  if(canEdit && !isEditing){
+    h += '<div class="sec-h"><b>' + (isAdm ? "관리" : "내 글") + '</b></div><div class="group">';
     h += '<button class="row actrow" data-act="edit"><span>글 수정</span>' + ICON.chevR + '</button>';
-    if(p.board === "notice") h += '<button class="row actrow" data-act="pin"><span>' + (p.pinned ? "고정 해제" : "위에 고정") + '</span>' + ICON.pin + '</button>';
-    h += '<button class="row actrow red" data-act="del"><span>글 삭제</span></button></div>';
+    if(isAdm){
+      if(p.board === "notice") h += '<button class="row actrow" data-act="pin"><span>' + (p.pinned ? "고정 해제" : "위에 고정") + '</span>' + ICON.pin + '</button>';
+      h += '<button class="row actrow red" data-act="del"><span>글 삭제</span></button>';
+    }
+    h += '</div>';
   }
 
   view.innerHTML = h;
@@ -1081,40 +1089,58 @@ $("detailView").addEventListener("click", async e => {
     else if(act === "cmt"){
       await addComment(p, $("detailView").querySelector('[data-f="cmt"]'));
     }
+    /* ---- 작성자 본인 또는 관리자: 글 수정 ---- */
+    else if(act === "edit" || act === "editCancel" || act === "editSave"){
+      const canEditPost = admin || (!!p.authorId && p.authorId === uid);
+      if(!canEditPost) return;
+      if(act === "edit"){
+        editing = p.id; draft = { eTitle: p.title || "", eArtist: p.artist || "", eBody: p.body || "" };
+        picks.edit = admin ? pickFromSlots(slotsOf(p)) : null;
+        render(); window.scrollTo(0, 0);
+        const t = $("detailView").querySelector('[data-f="eTitle"]'); if(t) t.focus();
+      }
+      else if(act === "editCancel"){ editing = null; draft = {}; render(); }
+      else {
+        const title = String(draft.eTitle || "").trim();
+        if(!title) return toast("제목을 비워 둘 수는 없어요.");
+        const upd = {
+          title,
+          artist: p.board === "setlist" ? String(draft.eArtist || "").trim() : (p.artist || ""),
+          body: String(draft.eBody || "").trim(),
+          editedAt: Date.now()
+        };
+        if(admin && p.board === "setlist" && picks.edit){
+          const next = slotsFromPick(picks.edit), nextKeys = next.map(s => s.k);
+          const removed = slotsOf(p).map(s => s.k).filter(k => !nextKeys.includes(k));
+          const lost = removed.reduce((n, k) => n + applicants(p, k).length, 0);
+          if(lost && !confirm("뺀 세션에 지원한 사람이 " + lost + "명 있어요. 그 지원 기록도 함께 지워집니다. 저장할까요?")) return;
+          upd.slots = next;
+          removed.forEach(k => { upd["sessions." + k] = deleteField(); });
+        }
+        b.disabled = true;
+        await updateDoc(ref, upd);
+        editing = null; draft = {}; render(); toast("수정했어요.");
+      }
+    }
+    /* ---- 작성자 본인 또는 관리자: 댓글 수정 ---- */
+    else if(act === "editc"){
+      const i = Number(b.dataset.i), c = (p.comments || [])[i];
+      if(!c) return;
+      if(!(admin || (!!c.authorId && c.authorId === uid))) return;
+      const v = prompt("댓글 수정", c.body);
+      if(v === null || !v.trim() || v.trim() === c.body) return;
+      const next = p.comments.slice();
+      next[i] = { ...c, body: v.trim().slice(0, 500), editedAt: Date.now() };
+      // cEdit: 몇 번째 댓글을 고쳤는지 보안 규칙에 알려 주는 값
+      await updateDoc(ref, { comments: next, cEdit: i });
+      toast("댓글을 수정했어요.");
+    }
     /* ---- 여기부터 관리자 전용 ---- */
     else if(!admin){ return; }
     else if(act === "kick"){
       const name = (applicants(p, b.dataset.k).find(a => a.id === b.dataset.id) || {}).name || "";
       if(!confirm(name + " 님을 이 세션에서 뺄까요?")) return;
       await updateDoc(ref, { ["sessions." + b.dataset.k + "." + b.dataset.id]: deleteField() });
-    }
-    else if(act === "edit"){
-      editing = p.id; draft = { eTitle: p.title || "", eArtist: p.artist || "", eBody: p.body || "" };
-      picks.edit = pickFromSlots(slotsOf(p));
-      render(); window.scrollTo(0, 0);
-      const t = $("detailView").querySelector('[data-f="eTitle"]'); if(t) t.focus();
-    }
-    else if(act === "editCancel"){ editing = null; draft = {}; render(); }
-    else if(act === "editSave"){
-      const title = String(draft.eTitle || "").trim();
-      if(!title) return toast("제목을 비워 둘 수는 없어요.");
-      const upd = {
-        title,
-        artist: p.board === "setlist" ? String(draft.eArtist || "").trim() : (p.artist || ""),
-        body: String(draft.eBody || "").trim(),
-        editedAt: Date.now()
-      };
-      if(p.board === "setlist" && picks.edit){
-        const next = slotsFromPick(picks.edit), nextKeys = next.map(s => s.k);
-        const removed = slotsOf(p).map(s => s.k).filter(k => !nextKeys.includes(k));
-        const lost = removed.reduce((n, k) => n + applicants(p, k).length, 0);
-        if(lost && !confirm("뺀 세션에 지원한 사람이 " + lost + "명 있어요. 그 지원 기록도 함께 지워집니다. 저장할까요?")) return;
-        upd.slots = next;
-        removed.forEach(k => { upd["sessions." + k] = deleteField(); });
-      }
-      b.disabled = true;
-      await updateDoc(ref, upd);
-      editing = null; draft = {}; render(); toast("수정했어요.");
     }
     else if(act === "pin"){
       await updateDoc(ref, { pinned: !p.pinned });
@@ -1129,16 +1155,6 @@ $("detailView").addEventListener("click", async e => {
       if(!confirm("이 댓글을 삭제할까요?")) return;
       const target = (p.comments || [])[Number(b.dataset.i)];
       if(target) await updateDoc(ref, { comments: arrayRemove(target) });
-    }
-    else if(act === "editc"){
-      const i = Number(b.dataset.i), c = (p.comments || [])[i];
-      if(!c) return;
-      const v = prompt("댓글 수정", c.body);
-      if(v === null || !v.trim() || v.trim() === c.body) return;
-      const next = p.comments.slice();
-      next[i] = { ...c, body: v.trim().slice(0, 500), editedAt: Date.now() };
-      await updateDoc(ref, { comments: next });
-      toast("댓글을 수정했어요.");
     }
   }catch(err){ fail(err, "처리하지 못했어요."); render(); }
 });
