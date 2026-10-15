@@ -227,6 +227,8 @@ a.row:active, button.row:active{background:var(--fill-2)}
 .tab{display:flex;flex-direction:column;align-items:center;gap:1px;min-width:76px;padding:7px 10px 6px;border-radius:999px;
   color:var(--label);font-size:11px;font-weight:600;letter-spacing:0;transition:background .2s,color .2s}
 .tab svg{font-size:23px}
+.tab .ts{display:none}
+@media (max-width:460px){ .tab .tl{display:none} .tab .ts{display:inline} }
 .tab[aria-selected="true"]{color:var(--accent);background:var(--accent-soft)}
 
 /* ---------- 바텀 시트 ---------- */
@@ -272,6 +274,84 @@ a.row:active, button.row:active{background:var(--fill-2)}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom));z-index:50;
   padding:11px 18px;border-radius:999px;font-size:15px;font-weight:500;white-space:nowrap;animation:fade .2s ease}
 .toast.top{bottom:auto;top:20px}
+
+
+/* ---------- 밴드 세션 현황판 ---------- */
+.stage-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.stage-top .grow{flex:1;min-width:10px}
+.seg2{display:inline-flex;background:var(--fill);border-radius:10px;padding:2px}
+.seg2 button{padding:6px 13px;border-radius:8px;font-size:13.5px;font-weight:500;color:var(--label)}
+.seg2 button[aria-pressed="true"]{background:var(--card);font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+:root[data-theme="dark"] .seg2 button[aria-pressed="true"]{background:#636366}
+.sumbar{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.sum{display:inline-flex;align-items:baseline;gap:5px;font-size:13px;padding:5px 11px;border-radius:999px;background:var(--card);letter-spacing:0}
+.sum b{color:var(--accent);font-weight:700}
+.sum.total{background:var(--accent-soft);color:var(--accent)}
+.roster{background:var(--card);border-radius:20px;padding:12px 14px 13px;margin-bottom:14px}
+.roster__h{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;color:var(--label-2);margin-bottom:9px;letter-spacing:0}
+.mchips{display:flex;flex-wrap:wrap;gap:6px;min-height:32px}
+.mchip{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;font-size:14px;font-weight:500;padding:6px 11px;border-radius:999px;
+  background:var(--fill);color:var(--label);touch-action:none;user-select:none;-webkit-user-select:none;line-height:1.3}
+.mchip .n{font-size:11px;color:var(--label-3);font-weight:600}
+.mchip.sel{background:var(--accent);color:var(--on-accent)}
+.mchip.sel .n{color:var(--on-accent);opacity:.8}
+.mchip.drag{position:fixed;z-index:999;pointer-events:none;opacity:.95;box-shadow:var(--glass-shadow);background:var(--accent);color:var(--on-accent)}
+.mchip .x{color:var(--label-3);font-size:14px;line-height:1;margin-left:1px}
+.mchip.sel .x{color:var(--on-accent)}
+.bd-wrap{overflow:auto;background:var(--card);border-radius:20px;-webkit-overflow-scrolling:touch}
+table.bd{border-collapse:separate;border-spacing:0;width:100%;font-size:14px}
+table.bd th,table.bd td{border-bottom:.5px solid var(--sep);padding:9px 10px;vertical-align:top;text-align:left}
+table.bd tr:last-child th,table.bd tr:last-child td{border-bottom:none}
+table.bd thead th{position:sticky;top:0;background:var(--card);z-index:2;font-size:13px;font-weight:600;white-space:nowrap;letter-spacing:0}
+table.bd thead th .cnt{display:block;font-size:11px;color:var(--accent);font-weight:700}
+table.bd thead th .x{color:var(--label-3);font-size:13px;margin-left:4px}
+.bd-song{position:sticky;left:0;background:var(--card);z-index:1;min-width:142px;max-width:200px}
+thead .bd-song{z-index:3}
+.bd-song b{font-size:14px;font-weight:600;display:block;line-height:1.35;word-break:break-word}
+.bd-song small{display:block;color:var(--label-3);font-size:12px;letter-spacing:0}
+.bd-song .x{color:var(--label-3);font-size:13px}
+td.cell{min-width:116px}
+td.cell.over{background:var(--accent-soft);box-shadow:inset 0 0 0 2px var(--accent-line)}
+td.cell .mchips{min-height:24px;gap:4px}
+td.cell .mchip{font-size:13px;padding:4px 9px}
+td.cell .ph{color:var(--label-3);font-size:12.5px}
+.sesscard{background:var(--card);border-radius:20px;padding:14px 16px;margin-bottom:10px}
+.sesscard h3{margin:0;font-size:17px;font-weight:700;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.sesscard h3 .cnt{font-size:13px;color:var(--accent);font-weight:600}
+.sess-song{display:flex;gap:10px;align-items:baseline;padding:8px 0 0;margin-top:8px;border-top:.5px solid var(--sep);font-size:14px}
+.sess-song b{font-weight:600;flex:0 0 42%;word-break:break-word}
+.sess-song .who{flex:1}
+.sess-none{margin:8px 0 0;font-size:13.5px;color:var(--label-3)}
+.stage-empty{background:var(--card);border-radius:20px;padding:36px 20px;text-align:center;color:var(--label-2);font-size:15px}
+.stage-empty b{display:block;color:var(--label);font-size:17px;margin-bottom:5px}
+.hint{font-size:13px;color:var(--label-3);margin:10px 2px 0;letter-spacing:0}
+.tick{color:var(--accent);font-size:17px}
+.print-title,.print-sub{display:none}
+
+@media print{
+  @page{size:A4 landscape;margin:10mm}
+  html,body{background:#fff !important;color:#000 !important}
+  .nav,.tabbar,.lt,.lt__desc,#stateBar,#list,#detailView,.sheet-wrap,.toast,.stage-top,.roster,.hint{display:none !important}
+  td.cell .ph{display:none}
+  .sum.total{display:none}
+  main.wrap{padding:0 !important;max-width:none}
+  .print-title{display:block;font-size:19px;font-weight:700;margin:0 0 4px}
+  .print-sub{display:block;font-size:11px;color:#555;margin-bottom:10px}
+  .sumbar{margin-bottom:8px}
+  .sum{background:#fff !important;border:.5px solid #bbb;color:#000 !important;font-size:10.5px}
+  .sum b{color:#000 !important}
+  .bd-wrap,.sesscard{overflow:visible !important;background:#fff !important;border-radius:0;padding:0}
+  table.bd{font-size:10.5px;width:100%}
+  table.bd th,table.bd td{border:.5px solid #999 !important;padding:5px 6px}
+  table.bd thead th{background:#f0f0f0 !important;position:static}
+  table.bd thead th .cnt{color:#000 !important}
+  .bd-song{position:static;background:#fff !important}
+  td.cell .mchip,.mchip{background:#eee !important;color:#000 !important;border:.5px solid #bbb;font-size:10px;padding:2px 6px}
+  .mchip .n{color:#444 !important}
+  .mchip .x,.bd-song .x,thead th .x{display:none !important}
+  tr,.sesscard{break-inside:avoid}
+  .sesscard{margin-bottom:8px;border-bottom:.5px solid #999}
+}
 
 @media (max-width:420px){
   .wrap{padding-left:16px;padding-right:16px}
@@ -419,16 +499,18 @@ a.row:active, button.row:active{background:var(--fill-2)}
       </div>
       <p class="lt__desc" id="bDesc"></p>
       <div id="list"></div>
+      <section id="stageView" class="hide"></section>
     </section>
 
     <section id="detailView" class="hide"></section>
   </main>
 
   <nav class="tabbar glass" role="tablist">
-    <button class="tab" role="tab" data-b="notice"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h3l6 4V6L7 10H4z"/><path d="M16.5 9a4 4 0 0 1 0 6"/><path d="M19 6.5a7.5 7.5 0 0 1 0 11"/></svg>공지</button>
-    <button class="tab" role="tab" data-b="setlist"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg>선곡회의</button>
-    <button class="tab" role="tab" data-b="free"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 9.5a6 6 0 0 1-8.7 5.3L3 16l.9-3.1A6 6 0 1 1 15 9.5z"/><path d="M17.6 8.3A6 6 0 0 1 20.1 17l.9 3.1-3.3-1.2a6 6 0 0 1-7.4-1.4"/></svg>잡담</button>
-    <button class="tab" role="tab" data-b="suggest"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/></svg>건의사항</button>
+    <button class="tab" role="tab" data-b="notice"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h3l6 4V6L7 10H4z"/><path d="M16.5 9a4 4 0 0 1 0 6"/><path d="M19 6.5a7.5 7.5 0 0 1 0 11"/></svg><span class="tl">공지</span><span class="ts">공지</span></button>
+    <button class="tab" role="tab" data-b="setlist"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg><span class="tl">선곡회의</span><span class="ts">선곡</span></button>
+    <button class="tab" role="tab" data-b="stage"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M9.5 9.5V20M15 9.5V20"/></svg><span class="tl">현황판</span><span class="ts">현황</span></button>
+    <button class="tab" role="tab" data-b="free"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 9.5a6 6 0 0 1-8.7 5.3L3 16l.9-3.1A6 6 0 1 1 15 9.5z"/><path d="M17.6 8.3A6 6 0 0 1 20.1 17l.9 3.1-3.3-1.2a6 6 0 0 1-7.4-1.4"/></svg><span class="tl">잡담</span><span class="ts">잡담</span></button>
+    <button class="tab" role="tab" data-b="suggest"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/></svg><span class="tl">건의사항</span><span class="ts">건의</span></button>
   </nav>
 
   <!-- 글쓰기 시트 -->
@@ -451,6 +533,22 @@ a.row:active, button.row:active{background:var(--fill-2)}
           <label class="frow"><span id="labBody">내용</span><textarea id="fBody" maxlength="4000"></textarea></label>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- 곡 추가 시트 (현황판) -->
+  <div class="sheet-wrap hide" id="songPickSheet" role="dialog" aria-modal="true" aria-label="곡 추가">
+    <div class="scrim" data-close="songpick"></div>
+    <div class="sheet">
+      <div class="grabber"></div>
+      <div class="sheet__head">
+        <button type="button" class="textbtn" data-close="songpick">취소</button>
+        <b>곡 추가</b>
+        <button type="button" class="textbtn textbtn--bold" id="songPickAdd">추가</button>
+      </div>
+      <div class="group" id="songPickList"></div>
+      <p class="note">선곡회의에 올라온 곡이에요. 여러 개를 골라서 한 번에 올릴 수 있어요.</p>
+      <button type="button" class="btn btn--wide" id="songManual">직접 입력해서 추가</button>
     </div>
   </div>
 
@@ -492,12 +590,12 @@ a.row:active, button.row:active{background:var(--fill-2)}
 // Firebase 설정 — 콘솔에서 복사한 값으로 통째로 교체
 const firebaseConfig = {
 apiKey: "AIzaSyDzGWjDCLAYQ2ypqDGNl66Dhz55sOeijNE",
-  authDomain: "gam-47d14.firebaseapp.com",
-  projectId: "gam-47d14",
-  storageBucket: "gam-47d14.firebasestorage.app",
-  messagingSenderId: "724349018147",
-  appId: "1:724349018147:web:43cdfab4512c2bcf35d196",
-  measurementId: "G-PH8WMSGMST"
+  authDomain: "gam-47d14.firebaseapp.com",
+  projectId: "gam-47d14",
+  storageBucket: "gam-47d14.firebasestorage.app",
+  messagingSenderId: "724349018147",
+  appId: "1:724349018147:web:43cdfab4512c2bcf35d196",
+  measurementId: "G-PH8WMSGMST"
 };
 
 // ※ 관리자 코드는 이 파일이 아니라 firestore.rules 안에 있어요. (소스 보기로 안 보이게)
@@ -516,6 +614,8 @@ const BOARDS = {
           empty:"아직 올라온 공지가 없어요.", write:"새 공지", titleLab:"제목", bodyLab:"내용"},
   setlist:{t:"선곡회의", d:"하고 싶은 곡을 올려 주세요. 곡을 누르면 원하는 세션에 지원할 수 있고, 누가 어디에 지원했는지 모두 볼 수 있어요.",
           empty:"아직 제안된 곡이 없어요.", write:"곡 제안하기", titleLab:"곡명", bodyLab:"곡 소개 / 참고 링크 (선택)"},
+  stage:{t:"현황판", d:"공연에서 어떤 곡을 누가 맡는지 한눈에 볼 수 있어요. 곡과 인원 배치는 관리자가 합니다.",
+          empty:"", write:"", titleLab:"", bodyLab:""},
   free:{t:"잡담", d:"공연 후기, 추천 곡, 합주 얘기, 소소한 일상까지 자유롭게 이야기해 주세요.",
           empty:"아직 올라온 이야기가 없어요.", write:"새 글", titleLab:"제목", bodyLab:"내용"},
   suggest:{t:"건의사항", d:"동방, 회비, 운영, 분위기 등 바뀌었으면 하는 점을 편하게 남겨 주세요.",
@@ -610,11 +710,14 @@ function closeSheet(id){
 document.addEventListener("click", e => {
   const c = e.target.closest("[data-close]");
   if(!c) return;
-  if(c.dataset.close === "compose") closeForm(); else closeSheet("settingsSheet");
+  if(c.dataset.close === "compose") closeForm();
+  else if(c.dataset.close === "songpick") closeSheet("songPickSheet");
+  else closeSheet("settingsSheet");
 });
 document.addEventListener("keydown", e => {
   if(e.key !== "Escape") return;
   if(!$("settingsSheet").classList.contains("hide")) closeSheet("settingsSheet");
+  else if(!$("songPickSheet").classList.contains("hide")) closeSheet("songPickSheet");
   else if(!$("composeSheet").classList.contains("hide")) closeForm();
 });
 $("meBtn").addEventListener("click", () => { paintNick(); paintAdmin(); openSheet("settingsSheet"); });
@@ -669,7 +772,7 @@ $("adminBtn").addEventListener("click", async () => {
 
 /* ---------- 주소(#/게시판/글ID)로 화면 전환 ---------- */
 function route(){
-  const m = location.hash.match(/^#\/(notice|setlist|free|suggest)(?:\/([\w-]+))?$/);
+  const m = location.hash.match(/^#\/(notice|setlist|stage|free|suggest)(?:\/([\w-]+))?$/);
   const b = m ? m[1] : "notice";
   if(b !== board || !$("bTitle").textContent){ board = b; paintBoard(); }
   const id = (m && m[2]) || null;
@@ -689,6 +792,7 @@ function paintBoard(){
   $("sheetTitle").textContent = c.write;
   $("labTitle").textContent = c.titleLab;
   $("labBody").textContent = c.bodyLab;
+  $("newBtn").classList.toggle("hide", board === "stage");
   $("wrapArtist").classList.toggle("hide", board !== "setlist");
   $("wrapPick").classList.toggle("hide", board !== "setlist");
   $("xlsxBtn").classList.toggle("hide", board !== "setlist");
@@ -915,6 +1019,16 @@ function applicants(p, key){
 }
 
 function render(){
+  if(board === "stage"){
+    $("detailView").classList.add("hide");
+    $("listView").classList.remove("hide");
+    $("list").classList.add("hide");
+    $("stageView").classList.remove("hide");
+    renderStage();
+    return;
+  }
+  $("list").classList.remove("hide");
+  $("stageView").classList.add("hide");
   if(openId){
     $("listView").classList.add("hide");
     $("detailView").classList.remove("hide");
@@ -1197,6 +1311,360 @@ async function addComment(p, inp){
   }
 }
 
+
+/* ==========================================================
+   밴드 세션 현황판
+   - boards/current 문서 하나에 곡·세션·인원·배치를 저장해요.
+   - 보기는 누구나, 편집은 관리자만 (보안 규칙에서도 막혀 있어요)
+   ========================================================== */
+let stage = null;                 // 서버에서 받은 현황판
+let stageSel = null;              // 탭해서 고른 사람 {mid, song, k}
+let stageMode = "grid";           // grid | sess
+try{ stageMode = localStorage.getItem("gam.stageMode") || "grid"; }catch(e){}
+let pickSel = [];                 // 곡 추가 시트에서 고른 글 id
+
+const rid = pre => pre + Math.random().toString(36).slice(2, 8);
+const stageRef = () => doc(db, "boards", "current");
+const canStage = () => !readOnly && !!uid && admin;
+
+function stageData(){
+  const d = stage || {};
+  return {
+    title: d.title || "밴드 세션 현황판",
+    note: d.note || "",
+    sessions: (Array.isArray(d.sessions) && d.sessions.length) ? d.sessions : DEFAULT_SLOTS.map(s => ({ k: s.k, label: s.label })),
+    songs: Array.isArray(d.songs) ? d.songs : [],
+    members: Array.isArray(d.members) ? d.members : [],
+    assign: (d.assign && typeof d.assign === "object") ? d.assign : {}
+  };
+}
+const asg = (a, songId, k) => (((a || {})[songId] || {})[k] || []);
+const mName = (st, id) => { const m = st.members.find(x => x.id === id); return m ? m.name : "?"; };
+// 이 사람이 몇 곡을 맡았는지
+function songsOfMember(st, mid){
+  let n = 0;
+  st.songs.forEach(s => st.sessions.forEach(x => { if(asg(st.assign, s.id, x.k).includes(mid)) n++; }));
+  return n;
+}
+// 이 세션이 몇 곡을 하는지
+const songsOfSession = (st, k) => st.songs.filter(s => asg(st.assign, s.id, k).length).length;
+
+async function saveStage(patch){
+  if(!canStage()) return;
+  try{
+    await setDoc(stageRef(), { ...patch, updatedAt: Date.now() }, { merge: true });
+  }catch(err){
+    console.error(err);
+    toast(err && err.code === "permission-denied" ? "권한이 없어 저장하지 못했어요." : "저장하지 못했어요.");
+  }
+}
+
+/* ---------- 배치 바꾸기 ---------- */
+async function stageAssign(mid, to, from){
+  const st = stageData();
+  const a = JSON.parse(JSON.stringify(st.assign));
+  const put = (songId, k, add) => {
+    a[songId] = a[songId] || {};
+    const cur = (a[songId][k] || []).filter(x => x !== mid);
+    a[songId][k] = add ? [...cur, mid] : cur;
+  };
+  if(from && from.song) put(from.song, from.k, false);
+  if(to && to.song){
+    if(asg(a, to.song, to.k).includes(mid)) return;
+    put(to.song, to.k, true);
+  }
+  stage = { ...(stage || {}), assign: a };   // 화면 먼저 반영
+  renderStage();
+  await saveStage({ assign: a });
+}
+
+/* ---------- 곡·인원·세션 추가와 삭제 ---------- */
+function openSongPick(){
+  if(!canStage()) return;
+  pickSel = [];
+  const st = stageData();
+  const have = st.songs.map(s => s.from).filter(Boolean);
+  const songs = posts.filter(p => p.board === "setlist").sort((a,b) => (a.createdAt||0) - (b.createdAt||0));
+  const box = $("songPickList");
+  box.innerHTML = songs.length
+    ? songs.map(p => '<button type="button" class="row" data-pick="' + esc(p.id) + '"><span class="row__main">' +
+        '<span class="row__t">' + esc(p.title) + (p.artist ? ' <span class="artist">· ' + esc(p.artist) + '</span>' : "") + '</span>' +
+        (have.includes(p.id) ? '<span class="row__meta">이미 올라와 있어요</span>' : "") +
+        '</span><span class="tick" data-tick="' + esc(p.id) + '">○</span></button>').join("")
+    : '<div class="row"><span style="color:var(--label-3);font-size:15px">선곡회의에 올라온 곡이 없어요.</span></div>';
+  openSheet("songPickSheet");
+}
+$("songPickList").addEventListener("click", e => {
+  const b = e.target.closest("[data-pick]");
+  if(!b) return;
+  const id = b.dataset.pick;
+  pickSel = pickSel.includes(id) ? pickSel.filter(x => x !== id) : [...pickSel, id];
+  const t = b.querySelector("[data-tick]");
+  if(t) t.textContent = pickSel.includes(id) ? "✓" : "○";
+});
+$("songPickAdd").addEventListener("click", async () => {
+  if(!pickSel.length) return toast("추가할 곡을 골라 주세요.");
+  const st = stageData();
+  const add = pickSel.map(id => posts.find(p => p.id === id)).filter(Boolean)
+    .map(p => ({ id: rid("s"), title: p.title, artist: p.artist || "", from: p.id }));
+  closeSheet("songPickSheet");
+  await saveStage({ songs: [...st.songs, ...add] });
+  toast(add.length + "곡을 올렸어요.");
+});
+$("songManual").addEventListener("click", async () => {
+  const t = prompt("곡명을 입력해 주세요.");
+  if(t === null || !t.trim()) return;
+  const ar = prompt("아티스트를 입력해 주세요. (없으면 비워 두세요)", "");
+  const st = stageData();
+  closeSheet("songPickSheet");
+  await saveStage({ songs: [...st.songs, { id: rid("s"), title: t.trim().slice(0,80), artist: String(ar || "").trim().slice(0,60) }] });
+});
+
+async function addMember(){
+  const v = prompt("추가할 사람의 이름을 적어 주세요. (예: 김상오 18기)");
+  if(v === null || !v.trim()) return;
+  const st = stageData();
+  const names = v.split(",").map(x => x.trim()).filter(Boolean).slice(0, 20);
+  await saveStage({ members: [...st.members, ...names.map(n => ({ id: rid("m"), name: n.slice(0,20) }))] });
+}
+async function addSession(){
+  const v = prompt("추가할 세션 이름을 적어 주세요. (예: 코러스, 퍼커션)");
+  if(v === null || !v.trim()) return;
+  const st = stageData();
+  await saveStage({ sessions: [...st.sessions, { k: rid("k"), label: v.trim().slice(0,12) }] });
+}
+async function removeSong(id){
+  const st = stageData();
+  const s = st.songs.find(x => x.id === id);
+  if(!s || !confirm("‘" + s.title + "’을(를) 현황판에서 뺄까요?")) return;
+  const a = { ...st.assign }; delete a[id];
+  await saveStage({ songs: st.songs.filter(x => x.id !== id), assign: a });
+}
+async function removeSession(k){
+  const st = stageData();
+  const s = st.sessions.find(x => x.k === k);
+  if(!s || !confirm("‘" + s.label + "’ 세션을 현황판에서 뺄까요? 배치된 사람도 함께 지워져요.")) return;
+  const a = JSON.parse(JSON.stringify(st.assign));
+  Object.keys(a).forEach(sid => { if(a[sid]) delete a[sid][k]; });
+  await saveStage({ sessions: st.sessions.filter(x => x.k !== k), assign: a });
+}
+async function removeMember(mid){
+  const st = stageData();
+  const m = st.members.find(x => x.id === mid);
+  if(!m || !confirm(m.name + " 님을 명단에서 뺄까요? 배치된 자리도 함께 비워져요.")) return;
+  const a = JSON.parse(JSON.stringify(st.assign));
+  Object.keys(a).forEach(sid => Object.keys(a[sid] || {}).forEach(k => {
+    a[sid][k] = (a[sid][k] || []).filter(x => x !== mid);
+  }));
+  await saveStage({ members: st.members.filter(x => x.id !== mid), assign: a });
+}
+async function renameStage(){
+  const st = stageData();
+  const v = prompt("현황판 이름을 적어 주세요. (예: 2026 가을 정기공연)", st.title);
+  if(v === null || !v.trim()) return;
+  await saveStage({ title: v.trim().slice(0, 40) });
+}
+
+/* ---------- 화면 그리기 ---------- */
+function mchipHTML(st, mid, from, canEdit){
+  const n = songsOfMember(st, mid);
+  const sel = stageSel && stageSel.mid === mid &&
+    ((!from && !stageSel.song) || (from && stageSel.song === from.song && stageSel.k === from.k));
+  return '<span class="mchip' + (sel ? " sel" : "") + '" data-mid="' + esc(mid) + '"' +
+    (from ? ' data-song="' + esc(from.song) + '" data-k="' + esc(from.k) + '"' : "") + '>' +
+    esc(mName(st, mid)) + (from ? "" : '<span class="n">' + n + '곡</span>') +
+    (canEdit && from ? '<button class="x" data-sact="unassign" data-mid="' + esc(mid) + '" data-song="' + esc(from.song) + '" data-k="' + esc(from.k) + '" aria-label="빼기">×</button>' : "") +
+    '</span>';
+}
+
+function renderStage(){
+  const st = stageData();
+  const can = canStage();
+  const totalSeats = st.songs.reduce((n, s) => n + st.sessions.reduce((m, x) => m + asg(st.assign, s.id, x.k).length, 0), 0);
+  let h = '';
+
+  // 인쇄(PDF)용 제목
+  h += '<div class="print-title">' + esc(st.title) + '</div>';
+  h += '<div class="print-sub">GAM · Groove &amp; Mood — ' + esc(ymd()) + ' 기준</div>';
+
+  // 도구 모음
+  h += '<div class="stage-top">';
+  h += '<div class="seg2" role="group" aria-label="보기 방식">' +
+       '<button type="button" data-sact="mode" data-m="grid" aria-pressed="' + (stageMode === "grid") + '">곡 기준</button>' +
+       '<button type="button" data-sact="mode" data-m="sess" aria-pressed="' + (stageMode === "sess") + '">세션 기준</button></div>';
+  h += '<span class="grow"></span>';
+  if(can){
+    h += '<button class="btn btn--sm" data-sact="addSong">곡 추가</button>';
+    h += '<button class="btn btn--sm" data-sact="addMember">인원 추가</button>';
+    h += '<button class="btn btn--sm" data-sact="addSession">세션 추가</button>';
+    h += '<button class="btn btn--sm" data-sact="rename">이름 바꾸기</button>';
+  }
+  h += '<button class="btn btn--sm btn--fill" data-sact="pdf">PDF로 저장</button>';
+  h += '</div>';
+
+  // 한눈에 보는 요약
+  h += '<div class="sumbar"><span class="sum total">' + esc(st.title) + '</span>' +
+       '<span class="sum">곡 <b>' + st.songs.length + '</b></span>' +
+       '<span class="sum">인원 <b>' + st.members.length + '</b></span>' +
+       '<span class="sum">배치 <b>' + totalSeats + '</b>자리</span>' +
+       st.sessions.map(x => '<span class="sum">' + esc(x.label) + ' <b>' + songsOfSession(st, x.k) + '</b>곡</span>').join("") +
+       '</div>';
+
+  // 명단 (여기서 끌어다 표에 놓아요)
+  h += '<div class="roster" data-drop="roster"><div class="roster__h"><span>명단 · 이름 옆 숫자는 맡은 곡 수예요</span>' +
+       (can ? '<button class="linkbtn" data-sact="addMember">+ 인원 추가</button>' : "") + '</div><div class="mchips">';
+  h += st.members.length
+    ? st.members.map(m => '<span class="mchip' + (stageSel && stageSel.mid === m.id && !stageSel.song ? " sel" : "") + '" data-mid="' + esc(m.id) + '">' +
+        esc(m.name) + '<span class="n">' + songsOfMember(st, m.id) + '곡</span>' +
+        (can ? '<button class="x" data-sact="delMember" data-mid="' + esc(m.id) + '" aria-label="명단에서 빼기">×</button>' : "") + '</span>').join("")
+    : '<span class="ph" style="color:var(--label-3);font-size:14px">아직 등록된 인원이 없어요.</span>';
+  h += '</div></div>';
+
+  if(!st.songs.length){
+    h += '<div class="stage-empty"><b>아직 올라온 곡이 없어요.</b>' +
+         (can ? "‘곡 추가’로 선곡회의의 곡을 가져오세요." : "관리자가 곡을 올리면 여기에 보여요.") + '</div>';
+    $("stageView").innerHTML = h;
+    return;
+  }
+
+  if(stageMode === "grid"){
+    h += '<div class="bd-wrap"><table class="bd"><thead><tr><th class="bd-song">곡</th>';
+    h += st.sessions.map(x => '<th>' + esc(x.label) +
+          (can ? '<button class="x" data-sact="delSession" data-k="' + esc(x.k) + '" aria-label="세션 빼기">×</button>' : "") +
+          '<span class="cnt">' + songsOfSession(st, x.k) + '곡</span></th>').join("");
+    h += '</tr></thead><tbody>';
+    h += st.songs.map((s, i) => {
+      let t = '<tr><th class="bd-song"><b>' + (i + 1) + '. ' + esc(s.title) + '</b>' +
+              (s.artist ? '<small>' + esc(s.artist) + '</small>' : "") +
+              (can ? '<button class="x" data-sact="delSong" data-song="' + esc(s.id) + '" aria-label="곡 빼기">× 빼기</button>' : "") + '</th>';
+      t += st.sessions.map(x => {
+        const list = asg(st.assign, s.id, x.k);
+        return '<td class="cell" data-drop="cell" data-song="' + esc(s.id) + '" data-k="' + esc(x.k) + '"><div class="mchips">' +
+          (list.length ? list.map(mid => mchipHTML(st, mid, { song: s.id, k: x.k }, can)).join("")
+                       : '<span class="ph">' + (can ? "여기에 놓기" : "—") + '</span>') +
+          '</div></td>';
+      }).join("");
+      return t + '</tr>';
+    }).join("");
+    h += '</tbody></table></div>';
+  } else {
+    h += st.sessions.map(x => {
+      const rows = st.songs.filter(s => asg(st.assign, s.id, x.k).length);
+      let t = '<div class="sesscard"><h3>' + esc(x.label) + '<span class="cnt">' + rows.length + '곡</span></h3>';
+      t += rows.length
+        ? rows.map(s => '<div class="sess-song"><b>' + esc(s.title) + (s.artist ? ' <span style="font-weight:400;color:var(--label-3)">· ' + esc(s.artist) + '</span>' : "") + '</b>' +
+            '<span class="who">' + asg(st.assign, s.id, x.k).map(mid => '<span class="mchip" style="margin:2px 4px 2px 0">' + esc(mName(st, mid)) + '</span>').join("") + '</span></div>').join("")
+        : '<p class="sess-none">아직 배치된 곡이 없어요.</p>';
+      return t + '</div>';
+    }).join("");
+  }
+
+  if(can) h += '<p class="hint">명단에서 사람을 끌어다 칸에 놓으면 배치돼요. 길게 끌기가 어려우면 이름을 한 번 누르고, 놓을 칸을 누르면 돼요. 칸의 × 를 누르면 빠져요.</p>';
+  $("stageView").innerHTML = h;
+}
+
+/* ---------- 버튼 ---------- */
+$("stageView").addEventListener("click", async e => {
+  const b = e.target.closest("[data-sact]");
+  if(b){
+    e.stopPropagation();
+    const act = b.dataset.sact;
+    if(act === "mode"){
+      stageMode = b.dataset.m;
+      try{ localStorage.setItem("gam.stageMode", stageMode); }catch(err){}
+      stageSel = null; renderStage(); return;
+    }
+    if(act === "pdf"){
+      toast("인쇄 창에서 ‘PDF로 저장’을 고르세요.");
+      setTimeout(() => window.print(), 400);
+      return;
+    }
+    if(!canStage()) return toast("관리자만 바꿀 수 있어요.");
+    if(act === "addSong") return openSongPick();
+    if(act === "addMember") return addMember();
+    if(act === "addSession") return addSession();
+    if(act === "rename") return renameStage();
+    if(act === "delSong") return removeSong(b.dataset.song);
+    if(act === "delSession") return removeSession(b.dataset.k);
+    if(act === "delMember") return removeMember(b.dataset.mid);
+    if(act === "unassign") return stageAssign(b.dataset.mid, null, { song: b.dataset.song, k: b.dataset.k });
+    return;
+  }
+  // 탭해서 옮기기: 이름 누르기 → 놓을 칸 누르기
+  if(!canStage()) return;
+  const chip = e.target.closest("[data-mid]");
+  if(chip){
+    const from = chip.dataset.song ? { song: chip.dataset.song, k: chip.dataset.k } : null;
+    const same = stageSel && stageSel.mid === chip.dataset.mid &&
+      ((!from && !stageSel.song) || (from && stageSel.song === from.song && stageSel.k === from.k));
+    stageSel = same ? null : { mid: chip.dataset.mid, song: from ? from.song : null, k: from ? from.k : null };
+    renderStage();
+    return;
+  }
+  const cell = e.target.closest('[data-drop]');
+  if(cell && stageSel){
+    const sel = stageSel; stageSel = null;
+    const from = sel.song ? { song: sel.song, k: sel.k } : null;
+    if(cell.dataset.drop === "roster") return from ? stageAssign(sel.mid, null, from) : renderStage();
+    return stageAssign(sel.mid, { song: cell.dataset.song, k: cell.dataset.k }, from);
+  }
+});
+
+/* ---------- 드래그로 옮기기 (마우스·터치 모두) ---------- */
+let drag = null;
+$("stageView").addEventListener("pointerdown", e => {
+  if(!canStage() || e.button === 1 || e.button === 2) return;
+  if(e.target.closest("[data-sact]")) return;
+  const chip = e.target.closest("[data-mid]");
+  if(!chip) return;
+  drag = { mid: chip.dataset.mid, from: chip.dataset.song ? { song: chip.dataset.song, k: chip.dataset.k } : null,
+           x0: e.clientX, y0: e.clientY, moved: false, ghost: null, over: null, id: e.pointerId };
+});
+window.addEventListener("pointermove", e => {
+  if(!drag || e.pointerId !== drag.id) return;
+  if(!drag.moved){
+    if(Math.abs(e.clientX - drag.x0) + Math.abs(e.clientY - drag.y0) < 8) return;
+    drag.moved = true;
+    const st = stageData();
+    const g = document.createElement("span");
+    g.className = "mchip drag";
+    g.textContent = mName(st, drag.mid);
+    document.body.appendChild(g);
+    drag.ghost = g;
+    stageSel = null;
+  }
+  e.preventDefault();
+  drag.ghost.style.left = (e.clientX - 28) + "px";
+  drag.ghost.style.top = (e.clientY - 34) + "px";
+  const el = document.elementFromPoint(e.clientX, e.clientY);
+  const target = el && el.closest ? el.closest("[data-drop]") : null;
+  if(drag.over !== target){
+    if(drag.over) drag.over.classList.remove("over");
+    drag.over = target;
+    if(target && target.dataset.drop === "cell") target.classList.add("over");
+  }
+}, { passive: false });
+window.addEventListener("pointerup", async e => {
+  if(!drag || e.pointerId !== drag.id) return;
+  const d = drag; drag = null;
+  if(d.ghost) d.ghost.remove();
+  if(d.over) d.over.classList.remove("over");
+  if(!d.moved) return;                       // 그냥 누른 것 → click 처리에 맡김
+  const t = d.over;
+  if(!t) return renderStage();
+  if(t.dataset.drop === "roster"){
+    if(d.from) await stageAssign(d.mid, null, d.from);
+    return;
+  }
+  await stageAssign(d.mid, { song: t.dataset.song, k: t.dataset.k }, d.from);
+});
+window.addEventListener("pointercancel", () => {
+  if(!drag) return;
+  if(drag.ghost) drag.ghost.remove();
+  if(drag.over) drag.over.classList.remove("over");
+  drag = null;
+});
+
 /* ---------- 상태 ---------- */
 function toast(msg){
   document.querySelectorAll(".toast").forEach(t => t.remove());
@@ -1250,6 +1718,11 @@ function boot(){
         : "게시판을 불러오지 못했어요. 새로고침해 주세요.");
     }
   );
+
+  // 현황판 실시간 구독
+  onSnapshot(doc(db, "boards", "current"),
+    snap => { stage = snap.exists() ? snap.data() : null; if(board === "stage") renderStage(); },
+    err => { console.error(err); });
 
   // 기기별 익명 로그인 → 관리자 여부 확인
   onAuthStateChanged(auth, async user => {
